@@ -1,29 +1,22 @@
-import java.io.ByteArrayOutputStream;
+package mqttxes;
+
 import java.io.File;
-import java.io.OutputStream;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 import org.deckfour.xes.extension.std.XConceptExtension;
 import org.deckfour.xes.extension.std.XTimeExtension;
 import org.deckfour.xes.factory.XFactory;
-import org.deckfour.xes.factory.XFactoryBufferedImpl;
 import org.deckfour.xes.factory.XFactoryNaiveImpl;
-import org.deckfour.xes.in.XParser;
 import org.deckfour.xes.in.XesXmlGZIPParser;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
-import org.deckfour.xes.out.XSerializer;
-import org.deckfour.xes.out.XesXmlSerializer;
 
-import com.google.common.collect.Lists;
-import com.hivemq.client.mqtt.datatypes.MqttQos;
-import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
-import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
+import mqttxes.lib.XesMqttEvent;
+import mqttxes.lib.XesMqttSerializer;
 
 public class Publisher {
 
@@ -61,27 +54,20 @@ public class Publisher {
 		});
 		System.out.println("Done");
 		
-		Mqtt5BlockingClient client = Mqtt5Client.builder()
-				.identifier(UUID.randomUUID().toString())
-				.serverHost("broker.hivemq.com")
-				.buildBlocking();
+		XesMqttSerializer client = new XesMqttSerializer("broker.hivemq.com", "pmcep");
 		client.connect();
 		
 		System.out.print("Streaming... ");
-		XSerializer serializer = new XesXmlSerializer();
 		for (XTrace trace : events) {
 			String caseId = XConceptExtension.instance().extractName(trace);
 			String activity = XConceptExtension.instance().extractName(trace.get(0));
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			XLog l = factory.createLog();
-			l.add(trace);
-			serializer.serialize(l, out);
+			XesMqttEvent event = new XesMqttEvent(logName, caseId, activity);
 			
-			client.publishWith().topic("pmcep/" + logName + "/" + caseId + "/" + activity)
-				.qos(MqttQos.AT_LEAST_ONCE)
-				.payload(out.toByteArray())
-				.send();
-			Thread.sleep(100);
+			event.addAllAttributes(trace.getAttributes(), "trace");
+			event.addAllAttributes(trace.get(0).getAttributes(), "event");
+			
+			client.send(event);
+			Thread.sleep(500);
 		}
 		client.disconnect();
 		System.out.println("Done");
