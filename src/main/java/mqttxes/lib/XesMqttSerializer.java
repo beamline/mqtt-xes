@@ -1,6 +1,7 @@
 package mqttxes.lib;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import com.hivemq.client.mqtt.datatypes.MqttQos;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
@@ -19,7 +20,13 @@ public class XesMqttSerializer {
 		this.topicBase = topicBase;
 		this.qos = qos;
 		
-		client = Mqtt5Client.builder().identifier(clientId).serverHost(brokerHost).buildBlocking();
+		client = Mqtt5Client.builder()
+			.identifier(clientId)
+			.serverHost(brokerHost)
+			.addDisconnectedListener(context -> {
+				context.getReconnector().reconnect(true).delay(2, TimeUnit.SECONDS);
+			})
+			.buildBlocking();
 	}
 	
 	public XesMqttSerializer(String brokerHost, String topicBase) {

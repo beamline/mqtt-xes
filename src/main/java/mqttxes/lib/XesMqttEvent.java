@@ -51,6 +51,11 @@ public class XesMqttEvent {
 		return this;
 	}
 	
+	public XesMqttEvent removeAttribute(String name, String type) {
+		attributes.get(type).remove(name);
+		return this;
+	}
+	
 	public XesMqttEvent addAllAttributes(XAttributeMap map, String type) {
 		for (String key : map.keySet()) {
 			addAttribute(key, map.get(key).toString(), type);

@@ -22,10 +22,12 @@ public class Publisher {
 
 	public static void main(String[] args) throws Exception {
 		
-		if (args.length == 0) {
-			System.out.println("Use java -jar FILE.jar log.xes.gz");
+		if (args.length != 2) {
+			System.out.println("Use java -jar FILE.jar log.xes.gz MILLISECONDS");
 			System.exit(1);
 		}
+		
+		int millis = Integer.parseInt(args[1]);
 		
 		System.out.print("Parsing log... ");
 		XFactory factory = new XFactoryNaiveImpl();
@@ -54,22 +56,26 @@ public class Publisher {
 		});
 		System.out.println("Done");
 		
-		XesMqttSerializer client = new XesMqttSerializer("broker.hivemq.com", "pmcep");
-		client.connect();
-		
 		System.out.print("Streaming... ");
-		for (XTrace trace : events) {
-			String caseId = XConceptExtension.instance().extractName(trace);
-			String activity = XConceptExtension.instance().extractName(trace.get(0));
-			XesMqttEvent event = new XesMqttEvent(logName, caseId, activity);
-			
-			event.addAllAttributes(trace.getAttributes(), "trace");
-			event.addAllAttributes(trace.get(0).getAttributes(), "event");
-			
-			client.send(event);
-			Thread.sleep(500);
+		XesMqttSerializer client = new XesMqttSerializer("broker.hivemq.com", "pmcep");
+		while (true) {
+			client.connect();
+			for (XTrace trace : events) {
+				String caseId = XConceptExtension.instance().extractName(trace);
+				String activity = XConceptExtension.instance().extractName(trace.get(0));
+				XesMqttEvent event = new XesMqttEvent(logName, caseId, activity);
+				
+				event.addAllAttributes(trace.getAttributes(), "trace");
+				event.addAllAttributes(trace.get(0).getAttributes(), "event");
+				event.removeAttribute("concept:name", "trace");
+				
+				event.removeAttribute("concept:name", "event");
+				event.removeAttribute("time:timestamp", "event");
+				
+				client.send(event);
+				Thread.sleep(millis);
+			}
+			client.disconnect();
 		}
-		client.disconnect();
-		System.out.println("Done");
 	}
 }
