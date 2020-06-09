@@ -67,10 +67,9 @@ public class Publisher {
 				
 				event.addAllTraceAttributes(trace.getAttributes());
 				event.addAllEventAttributes(trace.get(0).getAttributes());
-				event.removeAttribute("concept:name", "trace");
-				
-				event.removeAttribute("concept:name", "event");
-				event.removeAttribute("time:timestamp", "event");
+				event.removeTraceAttribute("concept:name");
+				event.removeEventAttribute("concept:name");
+				event.removeEventAttribute("time:timestamp");
 				
 				client.send(event);
 				Thread.sleep(millis);

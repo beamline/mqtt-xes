@@ -43,14 +43,6 @@ public class XesMqttEvent {
 		return addAttribute(name, value, "trace");
 	}
 
-	public XesMqttEvent addAllEventAttributes(XAttributeMap map) {
-		return addAllAttributes(map, "event");
-	}
-	
-	public XesMqttEvent addAllTraceAttributes(XAttributeMap map) {
-		return addAllAttributes(map, "trace");
-	}
-
 	public XesMqttEvent addAttribute(String name, String value, String type) {
 		if (!attributes.containsKey(type)) {
 			attributes.put(type, new HashMap<String, String>());
@@ -58,16 +50,32 @@ public class XesMqttEvent {
 		attributes.get(type).put(name, value);
 		return this;
 	}
+
+	public XesMqttEvent addAllEventAttributes(XAttributeMap map) {
+		return addAllAttributes(map, "event");
+	}
 	
-	public XesMqttEvent removeAttribute(String name, String type) {
-		attributes.get(type).remove(name);
-		return this;
+	public XesMqttEvent addAllTraceAttributes(XAttributeMap map) {
+		return addAllAttributes(map, "trace");
 	}
 	
 	public XesMqttEvent addAllAttributes(XAttributeMap map, String type) {
 		for (String key : map.keySet()) {
 			addAttribute(key, map.get(key).toString(), type);
 		}
+		return this;
+	}
+	
+	public XesMqttEvent removeTraceAttribute(String name) {
+		return removeAttribute(name, "trace");
+	}
+	
+	public XesMqttEvent removeEventAttribute(String name) {
+		return removeAttribute(name, "event");
+	}
+	
+	public XesMqttEvent removeAttribute(String name, String type) {
+		attributes.get(type).remove(name);
 		return this;
 	}
 }
