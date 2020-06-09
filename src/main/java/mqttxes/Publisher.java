@@ -65,8 +65,8 @@ public class Publisher {
 				String activity = XConceptExtension.instance().extractName(trace.get(0));
 				XesMqttEvent event = new XesMqttEvent(logName, caseId, activity);
 				
-				event.addAllAttributes(trace.getAttributes(), "trace");
-				event.addAllAttributes(trace.get(0).getAttributes(), "event");
+				event.addAllTraceAttributes(trace.getAttributes());
+				event.addAllEventAttributes(trace.get(0).getAttributes());
 				event.removeAttribute("concept:name", "trace");
 				
 				event.removeAttribute("concept:name", "event");

@@ -43,6 +43,14 @@ public class XesMqttEvent {
 		return addAttribute(name, value, "trace");
 	}
 
+	public XesMqttEvent addAllEventAttributes(XAttributeMap map) {
+		return addAllAttributes(map, "event");
+	}
+	
+	public XesMqttEvent addAllTraceAttributes(XAttributeMap map) {
+		return addAllAttributes(map, "trace");
+	}
+
 	public XesMqttEvent addAttribute(String name, String value, String type) {
 		if (!attributes.containsKey(type)) {
 			attributes.put(type, new HashMap<String, String>());
