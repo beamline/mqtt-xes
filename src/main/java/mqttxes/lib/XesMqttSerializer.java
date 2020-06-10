@@ -23,9 +23,10 @@ public class XesMqttSerializer {
 		client = Mqtt5Client.builder()
 			.identifier(clientId)
 			.serverHost(brokerHost)
-			.addDisconnectedListener(context -> {
-				context.getReconnector().reconnect(true).delay(2, TimeUnit.SECONDS);
-			})
+			.automaticReconnect()
+				.initialDelay(500, TimeUnit.MILLISECONDS)
+				.maxDelay(3, TimeUnit.MINUTES)
+				.applyAutomaticReconnect()
 			.buildBlocking();
 	}
 	
