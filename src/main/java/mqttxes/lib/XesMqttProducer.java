@@ -4,19 +4,15 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import com.hivemq.client.mqtt.datatypes.MqttQos;
-import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 
 import mqttxes.lib.exceptions.XesMqttClientNotConnectedException;
 
-public class XesMqttSerializer {
+public class XesMqttProducer extends XesMqttClient {
 	
-	private String topicBase;
-	private boolean clientIsConnected = false;
-	private Mqtt5BlockingClient client;
 	private MqttQos qos;
 	
-	public XesMqttSerializer(String brokerHost, String topicBase, String clientId, MqttQos qos) {
+	public XesMqttProducer(String brokerHost, String topicBase, String clientId, MqttQos qos) {
 		this.topicBase = topicBase;
 		this.qos = qos;
 		
@@ -27,26 +23,13 @@ public class XesMqttSerializer {
 				.initialDelay(500, TimeUnit.MILLISECONDS)
 				.maxDelay(3, TimeUnit.MINUTES)
 				.applyAutomaticReconnect()
-			.buildBlocking();
+			.buildAsync();
 	}
 	
-	public XesMqttSerializer(String brokerHost, String topicBase) {
+	public XesMqttProducer(String brokerHost, String topicBase) {
 		this(brokerHost, topicBase, UUID.randomUUID().toString(), MqttQos.EXACTLY_ONCE);
 	}
 	
-	public void connect() {
-		if (!clientIsConnected) {
-			client.connect();
-			clientIsConnected = true;
-		}
-	}
-	
-	public void disconnect() {
-		if (clientIsConnected) {
-			client.disconnect();
-		} 
-	}
-
 	public void send(XesMqttEvent event) throws XesMqttClientNotConnectedException {
 		if (!clientIsConnected) {
 			throw new XesMqttClientNotConnectedException();

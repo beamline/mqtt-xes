@@ -16,7 +16,7 @@ import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
 
 import mqttxes.lib.XesMqttEvent;
-import mqttxes.lib.XesMqttSerializer;
+import mqttxes.lib.XesMqttProducer;
 
 public class Publisher {
 
@@ -57,7 +57,7 @@ public class Publisher {
 		System.out.println("Done");
 		
 		System.out.print("Streaming... ");
-		XesMqttSerializer client = new XesMqttSerializer("broker.hivemq.com", "pmcep");
+		XesMqttProducer client = new XesMqttProducer("broker.hivemq.com", "pmcep");
 		while (true) {
 			client.connect();
 			for (XTrace trace : events) {
@@ -67,8 +67,6 @@ public class Publisher {
 				
 				event.addAllTraceAttributes(trace.getAttributes());
 				event.addAllEventAttributes(trace.get(0).getAttributes());
-				event.removeTraceAttribute("concept:name");
-				event.removeEventAttribute("concept:name");
 				event.removeEventAttribute("time:timestamp");
 				
 				client.send(event);
