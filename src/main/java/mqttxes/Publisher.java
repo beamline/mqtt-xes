@@ -58,21 +58,19 @@ public class Publisher {
 		
 		System.out.print("Streaming... ");
 		XesMqttProducer client = new XesMqttProducer("broker.hivemq.com", "pmcep");
-		while (true) {
-			client.connect();
-			for (XTrace trace : events) {
-				String caseId = XConceptExtension.instance().extractName(trace);
-				String activity = XConceptExtension.instance().extractName(trace.get(0));
-				XesMqttEvent event = new XesMqttEvent(logName, caseId, activity);
-				
-				event.addAllTraceAttributes(trace.getAttributes());
-				event.addAllEventAttributes(trace.get(0).getAttributes());
-				event.removeEventAttribute("time:timestamp");
-				
-				client.send(event);
-				Thread.sleep(millis);
-			}
-			client.disconnect();
+		client.connect();
+		for (XTrace trace : events) {
+			String caseId = XConceptExtension.instance().extractName(trace);
+			String activity = XConceptExtension.instance().extractName(trace.get(0));
+			XesMqttEvent event = new XesMqttEvent(logName, caseId, activity);
+			
+			event.addAllTraceAttributes(trace.getAttributes());
+			event.addAllEventAttributes(trace.get(0).getAttributes());
+			event.removeEventAttribute("time:timestamp");
+			
+			client.send(event);
+			Thread.sleep(millis);
 		}
+		client.disconnect();
 	}
 }
