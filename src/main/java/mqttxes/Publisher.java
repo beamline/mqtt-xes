@@ -19,22 +19,43 @@ import mqttxes.lib.XesMqttEvent;
 import mqttxes.lib.XesMqttProducer;
 
 public class Publisher {
+	
+	private static XFactory factory = new XFactoryNaiveImpl();
 
 	public static void main(String[] args) throws Exception {
 		
 		if (args.length != 2) {
-			System.out.println("Use java -jar FILE.jar log.xes.gz MILLISECONDS");
+			System.out.println("Use java -jar mqtt-xes.jar LOG.XES.GZ MILLISECONDS");
 			System.exit(1);
 		}
 		
-		int millis = Integer.parseInt(args[1]);
-		
 		System.out.print("Parsing log... ");
-		XFactory factory = new XFactoryNaiveImpl();
 		XLog log = new XesXmlGZIPParser(factory).parse(new File(args[0])).get(0);
 		String logName = XConceptExtension.instance().extractName(log);
 		System.out.println("Done");
 		
+		List<XTrace> events = log2events(log);
+		int millis = Integer.parseInt(args[1]);
+		
+		System.out.print("Streaming... ");
+		XesMqttProducer client = new XesMqttProducer("broker.hivemq.com", "pmcep");
+		client.connect();
+		for (XTrace trace : events) {
+			String caseId = XConceptExtension.instance().extractName(trace);
+			String activity = XConceptExtension.instance().extractName(trace.get(0));
+			XesMqttEvent event = new XesMqttEvent(logName, caseId, activity);
+			
+			event.addAllTraceAttributes(trace.getAttributes());
+			event.addAllEventAttributes(trace.get(0).getAttributes());
+			event.removeEventAttribute("time:timestamp");
+			
+			client.send(event);
+			Thread.sleep(millis);
+		}
+		client.disconnect();
+	}
+	
+	private static List<XTrace> log2events(XLog log) throws Exception {
 		System.out.print("Parsing the events for streaming... ");
 		List<XTrace> events = new LinkedList<XTrace>();
 		for(XTrace trace : log) {
@@ -55,22 +76,6 @@ public class Publisher {
 			}
 		});
 		System.out.println("Done");
-		
-		System.out.print("Streaming... ");
-		XesMqttProducer client = new XesMqttProducer("broker.hivemq.com", "pmcep");
-		client.connect();
-		for (XTrace trace : events) {
-			String caseId = XConceptExtension.instance().extractName(trace);
-			String activity = XConceptExtension.instance().extractName(trace.get(0));
-			XesMqttEvent event = new XesMqttEvent(logName, caseId, activity);
-			
-			event.addAllTraceAttributes(trace.getAttributes());
-			event.addAllEventAttributes(trace.get(0).getAttributes());
-			event.removeEventAttribute("time:timestamp");
-			
-			client.send(event);
-			Thread.sleep(millis);
-		}
-		client.disconnect();
+		return events;
 	}
 }
