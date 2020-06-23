@@ -8,10 +8,22 @@ import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 
 import mqttxes.lib.exceptions.XesMqttClientNotConnectedException;
 
+/**
+ * Producer client, useful to send new events
+ * 
+ * @author Andrea Burattin
+ */
 public class XesMqttProducer extends XesMqttClient {
 	
 	private MqttQos qos;
 	
+	/**
+	 * 
+	 * @param brokerHost
+	 * @param topicBase
+	 * @param clientId
+	 * @param qos
+	 */
 	public XesMqttProducer(String brokerHost, String topicBase, String clientId, MqttQos qos) {
 		this.topicBase = topicBase;
 		this.qos = qos;
@@ -26,10 +38,22 @@ public class XesMqttProducer extends XesMqttClient {
 			.buildAsync();
 	}
 	
+	/**
+	 * This constructor generates a new client using a random value for the
+	 * client id
+	 * 
+	 * @param brokerHost
+	 * @param topicBase
+	 */
 	public XesMqttProducer(String brokerHost, String topicBase) {
 		this(brokerHost, topicBase, UUID.randomUUID().toString(), MqttQos.EXACTLY_ONCE);
 	}
 	
+	/**
+	 * 
+	 * @param event
+	 * @throws XesMqttClientNotConnectedException
+	 */
 	public void send(XesMqttEvent event) throws XesMqttClientNotConnectedException {
 		if (!clientIsConnected) {
 			throw new XesMqttClientNotConnectedException();

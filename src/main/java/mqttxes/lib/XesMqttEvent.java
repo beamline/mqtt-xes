@@ -8,6 +8,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * Class that represents an event. Objects of this class can be used both to
+ * send events to the broker (using the {@link XesMqttProducer}) and also when
+ * events are received (using the {@link XesMqttConsumer} and the
+ * {@link XesMqttEventCallback}).
+ * 
+ * @author Andrea Burattin
+ */
 public class XesMqttEvent {
 
 	private static JSONParser parser = new JSONParser();

@@ -7,10 +7,20 @@ import org.json.simple.parser.ParseException;
 
 import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish;
 
+/**
+ * This class provides the callback method to handle new events being received
+ * 
+ * @author Andrea Burattin
+ */
 public abstract class XesMqttEventCallback implements Consumer<Mqtt5Publish> {
 
-	
-	public abstract void accept(XesMqttEvent e);
+	/**
+	 * This method has to be implemented by subclasses to properly process the
+	 * event received
+	 * 
+	 * @param event
+	 */
+	public abstract void accept(XesMqttEvent event);
 	
 	@Override
 	public void accept(Mqtt5Publish t) {
