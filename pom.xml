@@ -83,4 +83,11 @@
 		</license>
 	</licenses>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>pmcep</name>
+			<url>https://maven.pkg.github.com/pmcep/mqtt-xes</url>
+		</repository>
+	</distributionManagement>
 </project>
