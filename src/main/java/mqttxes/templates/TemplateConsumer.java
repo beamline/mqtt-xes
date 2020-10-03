@@ -8,7 +8,7 @@ public class TemplateConsumer {
 
 	public static void main(String[] args) throws InterruptedException {
 
-		XesMqttConsumer client = new XesMqttConsumer("broker.hivemq.com", "pmcep");
+		XesMqttConsumer client = new XesMqttConsumer("broker.hivemq.com", "pmcep2");
 		
 		client.subscribe(new XesMqttEventCallback() {
 			@Override
