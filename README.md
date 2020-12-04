@@ -1,7 +1,31 @@
 # MQTT-XES
+
 MQTT-XES a lightweight logging mechanism for real-time logging for process mining purposes
 
+### Installing the library
+
+To install the library using Maven, first you need to include, in your `pom.xml` file, the package repository:
+```xml
+<repositories>
+	<repository>
+		<id>beamline</id>
+		<name></name>
+		<url>https://dl.bintray.com/delas/beamline</url>
+	</repository>
+</repositories>
+```
+Then you can include the dependency to the version you are interested, for example:
+```xml
+<dependency>
+	<groupId>beamline</groupId>
+	<artifactId>mqtt-xes</artifactId>
+	<version>0.3.2</version>
+</dependency>
+```
+
+
 ### Sending events
+
 To generate events to be sent using MQTT-XES it is possible ot use the following code snippet, first to create the client:
 ```java
 XesMqttSerializer client = new XesMqttSerializer("broker.hivemq.com", "BASE");

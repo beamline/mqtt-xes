@@ -2,7 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>pmcep</groupId>
+	<groupId>beamline</groupId>
 	<artifactId>mqtt-xes</artifactId>
 	<version>0.3.2</version>
 
@@ -76,18 +76,11 @@
 		</plugins>
 	</build>
 	
-	<licenses>
-		<license>
-			<name>The Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-		</license>
-	</licenses>
-
 	<distributionManagement>
 		<repository>
-			<id>github</id>
-			<name>pmcep</name>
-			<url>https://maven.pkg.github.com/pmcep/mqtt-xes</url>
+			<id>bintray-delas-beamline</id>
+			<name>delas-beamline</name>
+			<url>https://api.bintray.com/maven/delas/beamline/mqtt-xes/;publish=1</url>
 		</repository>
 	</distributionManagement>
 </project>
