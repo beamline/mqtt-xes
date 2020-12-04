@@ -2,9 +2,9 @@
 
 MQTT-XES a lightweight logging mechanism for real-time logging for process mining purposes
 
-### Installing the library
+### Using the library
 
-To install the library using Maven, first you need to include, in your `pom.xml` file, the package repository:
+To use the library in your Maven project it is necessary to include, in the `pom.xml` file, the package repository:
 ```xml
 <repositories>
     <repository>
