@@ -7,19 +7,19 @@ MQTT-XES a lightweight logging mechanism for real-time logging for process minin
 To install the library using Maven, first you need to include, in your `pom.xml` file, the package repository:
 ```xml
 <repositories>
-	<repository>
-		<id>beamline</id>
-		<name></name>
-		<url>https://dl.bintray.com/delas/beamline</url>
-	</repository>
+    <repository>
+        <id>beamline</id>
+        <name></name>
+        <url>https://dl.bintray.com/delas/beamline</url>
+    </repository>
 </repositories>
 ```
 Then you can include the dependency to the version you are interested, for example:
 ```xml
 <dependency>
-	<groupId>beamline</groupId>
-	<artifactId>mqtt-xes</artifactId>
-	<version>0.3.2</version>
+    <groupId>beamline</groupId>
+    <artifactId>mqtt-xes</artifactId>
+    <version>0.3.2</version>
 </dependency>
 ```
 
