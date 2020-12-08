@@ -28,7 +28,7 @@ Then you can include the dependency to the version you are interested, for examp
 
 To generate events to be sent using MQTT-XES it is possible ot use the following code snippet, first to create the client:
 ```java
-XesMqttSerializer client = new XesMqttSerializer("broker.hivemq.com", "BASE");
+XesMqttProducer client = new XesMqttProducer("broker.hivemq.com", "BASE");
 ```
 It is also necessary to create the event that has to be sent:
 ```java
