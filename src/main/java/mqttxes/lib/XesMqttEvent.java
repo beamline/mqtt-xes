@@ -52,12 +52,16 @@ public class XesMqttEvent {
 		if (!json.isEmpty()) {
 			JSONObject atts = (JSONObject) parser.parse(json);
 			JSONObject traceAtts = (JSONObject) atts.get("trace");
-			for (Object key : traceAtts.keySet()) {
-				addTraceAttribute(key.toString(), traceAtts.get(key).toString());
+			if (traceAtts != null) {
+				for (Object key : traceAtts.keySet()) {
+					addTraceAttribute(key.toString(), traceAtts.get(key).toString());
+				}
 			}
 			JSONObject eventAtts = (JSONObject) atts.get("event");
-			for (Object key : eventAtts.keySet()) {
-				addEventAttribute(key.toString(), eventAtts.get(key).toString());
+			if (eventAtts != null) {
+				for (Object key : eventAtts.keySet()) {
+					addEventAttribute(key.toString(), eventAtts.get(key).toString());
+				}
 			}
 		}
 	}
