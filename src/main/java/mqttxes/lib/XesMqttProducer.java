@@ -31,6 +31,7 @@ public class XesMqttProducer extends XesMqttClient {
 		client = Mqtt5Client.builder()
 			.identifier(clientId)
 			.serverHost(brokerHost)
+			.serverPort(8883)
 			.automaticReconnect()
 				.initialDelay(500, TimeUnit.MILLISECONDS)
 				.maxDelay(3, TimeUnit.MINUTES)
