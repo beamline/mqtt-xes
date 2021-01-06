@@ -25,6 +25,7 @@ public class XesMqttConsumer extends XesMqttClient {
 				.identifier(clientId)
 				.serverHost(brokerHost)
 				.serverPort(8883)
+				.sslWithDefaultConfig()
 				.automaticReconnect()
 					.initialDelay(500, TimeUnit.MILLISECONDS)
 					.maxDelay(3, TimeUnit.MINUTES)
