@@ -1,6 +1,6 @@
 # MQTT-XES
 
-MQTT-XES is a lightweight logging mechanism for real-time logging for process mining purposes
+MQTT-XES is a lightweight library for real-time logging for process mining purposes
 
 ### Using the library
 
