@@ -19,7 +19,7 @@ Then you can include the dependency to the version you are interested, for examp
 <dependency>
     <groupId>beamline</groupId>
     <artifactId>mqtt-xes</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.5</version>
 </dependency>
 ```
 
