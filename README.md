@@ -8,20 +8,20 @@ To use the library in your Maven project it is necessary to include, in the `pom
 ```xml
 <repositories>
     <repository>
-        <id>beamline</id>
-        <name></name>
-        <url>https://dl.bintray.com/delas/beamline</url>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
     </repository>
 </repositories>
 ```
 Then you can include the dependency to the version you are interested, for example:
 ```xml
 <dependency>
-    <groupId>beamline</groupId>
+    <groupId>com.github.beamline</groupId>
     <artifactId>mqtt-xes</artifactId>
     <version>0.3.5</version>
 </dependency>
 ```
+See https://jitpack.io/#beamline/mqtt-xes for further details (e.g., using it with Gradle).
 
 
 ### Sending events
